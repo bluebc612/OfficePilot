@@ -1,7 +1,12 @@
-<ul class="timelines">
-<% _.each(timelines, function (timeline) { %>
-
-  <li><%= timeline.get('message') %></li> 
-
-<% }); %>
-</ul>
+<% 
+	var idx = 0;
+	_.each(timelines, function (timeline) { 
+%>
+	<div class="<%= (++idx%2 == 0) ? "tile" : "tile double" %>">
+		<div class="tile-content <%= (idx%2 == 0) ? "bg-color-green" : "bg-color-blueDark" %>">
+			<%= timeline.get('message') %>
+		</div>
+	</div>
+<% 
+	}); 
+%>

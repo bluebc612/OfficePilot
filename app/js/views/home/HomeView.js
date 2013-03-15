@@ -8,7 +8,7 @@ define([
 
   var HomeView = Backbone.View.extend({
     // el: $("#page"),
-    el: '.page',
+    el: '.twitter-widget',
 
     render: function(){
       $('.menu li').removeClass('active');

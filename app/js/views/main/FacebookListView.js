@@ -28,6 +28,7 @@ define([
       this.timelineCollection.fetch({ 
         success: function (timelines) {
           // Once the results are returned lets populate our template
+          console.log("facebook fetch success");
           $(that.el).html(_.template(TimelineListTemplate, {timelines: timelines.models, _:_}));
           // Now we have finished loading set isLoading back to false
           that.isLoading = false;
