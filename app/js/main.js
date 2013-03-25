@@ -14,12 +14,18 @@ require.config({
     order: 'libs/require/order',
 
     // util
-    
+    // OAuth: 'libs/twitter/jsOAuth',
+    // sha1: 'libs/twitter/sha1',
+
     // Just a short cut so we can put our html outside the js dir
     // When you have HTML/CSS designers this aids in keeping them out of the js directory
     templates: '../templates'
   },
   shim: {
+    // 'OAuth': {
+    //     deps: ['sha1'],
+    //     exports: 'OAuth'
+    // }
   },
 	urlArgs: "bust=" +  (new Date()).getTime()
 

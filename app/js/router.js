@@ -13,7 +13,7 @@ define([
     }
   });
   
-  var initialize = function(options){
+var initialize = function(options){
     var appView = options.appView;
     var app_router = new AppRouter;
     

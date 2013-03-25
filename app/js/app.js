@@ -4,12 +4,20 @@ define([
   'backbone',
   'vm',
   'events',
-  'text!templates/layout.html' 
+  'text!templates/layout.html',
 ], function($, _, Backbone, Vm, Events, layoutTemplate){
   var AppView = Backbone.View.extend({
     el: '.container',
+
     initialize: function () {
-      
+      $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+        options.crossDomain ={
+          crossDomain: true
+        };
+        options.xhrFields = {
+          withCredentials: true
+        };
+      });
     },
     render: function () {
       var that = this;
