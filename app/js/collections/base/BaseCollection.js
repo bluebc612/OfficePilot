@@ -2,13 +2,32 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'libs/facebook/config'
-], function($, _, Backbone, Config) {
+  'libs/twitter/config',
+  'OAuth'
+], function($, _, Backbone, Config, OAuth) {
 	var BaseCollection = Backbone.Collection.extend({
-		path: null,
+		makeOAuthHeader: function() {
+			var accessor = {
+				consumerSecret: Config.consumerSecret, 
+				tokenSecret: Config.accessTokenSecret
+			};
+   			var message = {
+   				method: 'GET', 
+   				action: this.url(),
+   				parameters: {
+  					oauth_signature_method: 'HMAC-SHA1', 
+   					oauth_version: '1.0',
+   					oauth_consumer_key: Config.consumerKey,
+   					oauth_token: Config.accessToken
+   				}
+			};
 
-		// You must provide an access token for most api requests
-		accessToken: Config.accessToken,
+			OAuth.setTimestampAndNonce(message);
+			OAuth.SignatureMethod.sign(message, accessor);
+			return OAuth.getAuthorizationHeader("", message.parameters);
+		},
+
+		path: null,
 
 		// Define fields for request
 		fields: [],
@@ -28,7 +47,7 @@ define([
 		},
 
 		fetch: function(options) {
-			var accessToken = this.accessToken,
+			var oauthHeader = this.makeOAuthHeader(),
 				fields = this.fields.join(','),
 				limit = this.limit;
 
@@ -36,8 +55,10 @@ define([
 
 			// Extend options with graph api parameters
 			_.extend(options, {
+				headers: {
+					Authorization: oauthHeader
+				},
 				data: {
-					access_token: accessToken,
 					fields: fields,
 					limit: limit
 				}
