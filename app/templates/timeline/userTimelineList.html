@@ -1,0 +1,12 @@
+<% 
+	var idx = 0;
+	_.each(tweets, function (tweet) { 
+%>
+	<div class="<%= (++idx%2 == 0) ? "tile" : "tile double" %>">
+		<div class="tile-content <%= (idx%2 == 0) ? "bg-color-green" : "bg-color-blueDark" %>">
+			<%= tweet.get('text') %>
+		</div>
+	</div>
+<% 
+	}); 
+%>

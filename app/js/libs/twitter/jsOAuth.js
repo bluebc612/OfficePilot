@@ -326,6 +326,85 @@ exports.OAuth = (function (global) {
              *      success {function} callback for a sucessful request
              *      failure {function} callback for a failed request
              */
+             this.requestHeader = function (options) {
+                var method, url, data, headers, xhr, i,
+                    headerParams, signatureMethod, signatureString, signature,
+                    query = [], appendQueryString, signatureData = {}, params, withFile, urlString;
+
+                method = options.method || 'GET';
+                url = URI(options.url);
+                data = options.data || {};
+                headers = options.headers || {};
+                success = options.success || function () {};
+                failure = options.failure || function () {};
+
+                // According to the spec
+                withFile = (function(){
+                    var hasFile = false;
+                    for(var name in data) {
+                        // Thanks to the FileAPI any file entry
+                        // has a fileName property
+                        if(data[name] instanceof  File || typeof data[name].fileName != 'undefined') hasFile = true;
+                    }
+
+                    return hasFile;
+                })();
+
+                appendQueryString = options.appendQueryString ? options.appendQueryString : false;
+
+                if (oauth.enablePrivilege) {
+                    netscape.security.PrivilegeManager.enablePrivilege('UniversalBrowserRead UniversalBrowserWrite');
+                }
+                
+                headerParams = {
+                    'oauth_callback': oauth.callbackUrl,
+                    'oauth_consumer_key': oauth.consumerKey,
+                    'oauth_token': oauth.accessTokenKey,
+                    'oauth_signature_method': oauth.signatureMethod,
+                    'oauth_timestamp': getTimestamp(),
+                    'oauth_nonce': getNonce(),
+                    'oauth_verifier': oauth.verifier,
+                    'oauth_version': OAUTH_VERSION_1_0
+                };
+
+                signatureMethod = oauth.signatureMethod;
+
+                // Handle GET params first
+                params = url.query.toObject();
+                for (i in params) {
+                    signatureData[i] = params[i];
+                }
+
+                // According to the OAuth spec
+                // if data is transfered using
+                // multipart the POST data doesn't
+                // have to be signed:
+                // http://www.mail-archive.com/oauth@googlegroups.com/msg01556.html
+                if((!('Content-Type' in headers) || headers['Content-Type'] == 'application/x-www-form-urlencoded') && !withFile) {
+                    for (i in data) {
+                        signatureData[i] = data[i];
+                    }
+                }
+
+                urlString = url.scheme + '://' + url.host + url.path;
+                signatureString = toSignatureBaseString(method, urlString, headerParams, signatureData);
+
+                signature = OAuth.signatureMethod[signatureMethod](oauth.consumerSecret, oauth.accessTokenSecret, signatureString);
+
+                headerParams.oauth_signature = signature;
+
+                if (this.realm)
+                {
+                    headerParams['realm'] = this.realm;
+                }
+
+                if (oauth.proxyUrl) {
+                    url = URI(oauth.proxyUrl + url.path);
+                }
+
+                return 'OAuth ' + toHeaderString(headerParams);
+            };
+
             this.request = function (options) {
                 var method, url, data, headers, success, failure, xhr, i,
                     headerParams, signatureMethod, signatureString, signature,
@@ -473,8 +552,8 @@ exports.OAuth = (function (global) {
                     }
                 }
 
-                xhr.open(method, url+'', true);
-
+                // xhr.open(method, url+'', true);
+return 'OAuth ' + toHeaderString(headerParams);
                 xhr.setRequestHeader('Authorization', 'OAuth ' + toHeaderString(headerParams));
                 xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
                 for (i in headers) {

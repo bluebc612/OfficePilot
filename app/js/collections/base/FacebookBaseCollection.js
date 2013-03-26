@@ -1,8 +1,8 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'libs/facebook/config'
+  	'jquery',
+  	'underscore',
+  	'backbone',
+  	'libs/facebook/config'
 ], function($, _, Backbone, Config) {
 	var BaseCollection = Backbone.Collection.extend({
 		path: null,

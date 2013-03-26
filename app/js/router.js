@@ -9,6 +9,7 @@ define([
     routes: {
       // Define some URL routes
       'topics': 'showTopics',
+      'userTimeline': 'showUserTimeline',
       '*actions': 'defaultAction'
     }
   });
@@ -18,15 +19,22 @@ var initialize = function(options){
     var app_router = new AppRouter;
     
     app_router.on('route:showTopics', function(actions) {
-      require(['views/main/searchListView'], function (TwitterWidget) {
-        var topicsView = Vm.create(appView, 'TwitterWidget', TwitterWidget);
+      require(['views/topic/searchListView'], function (tweets) {
+        var topicsView = Vm.create(appView, 'TopicView', tweets);
+        topicsView.render();
+      });
+    });
+
+    app_router.on('route:showUserTimeline', function(actions) {
+      require(['views/timeline/userTimelineListView'], function (tweets) {
+        var topicsView = Vm.create(appView, 'UserTimelineView', tweets);
         topicsView.render();
       });
     });
 
     app_router.on('route:defaultAction', function (actions) {
-      require(['views/home/HomeView'], function (HomeView) {
-        var homeView = Vm.create(appView, 'HomeView', HomeView);
+      require(['views/timeline/homeTimelineListView'], function (tweets) {
+        var homeView = Vm.create(appView, 'HomeTimelineView', tweets);
         homeView.render();
       });
     });

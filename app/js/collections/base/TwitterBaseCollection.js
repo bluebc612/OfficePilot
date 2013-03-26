@@ -1,9 +1,9 @@
 define([
-  'jquery',
-  'underscore',
-  'backbone',
-  'libs/twitter/config',
-  'OAuth'
+	'jquery',
+  	'underscore',
+  	'backbone',
+  	'libs/twitter/config',
+  	'OAuth'
 ], function($, _, Backbone, Config, OAuth) {
 	var oauth = OAuth({
 	    consumerKey: Config.consumerKey,
@@ -34,46 +34,32 @@ define([
 			return 'https://api.twitter.com/1.1/' + this.path;
 		},
 
-		success: function(data) {
-			return data.text;
-			console.log("Success");
-		},
-
-		failure: function(data) {
-			console.log("Error : " + data.text);
-		},
-
-		fetchTweets: function(options) {
-			console.log("fetchTweets");
+		fetch: function(options) {
+			console.log("fetch");
 
 			var limit = this.limit;
-
 			options = options || {};
 
-			// Extend options with graph api parameters
 			_.extend(options, {
-			method: this.method,
+				method: this.method,
 				url: this.url(),
-				success: success,
-				failure: this.failure,
 				data: {
 					limit: limit
 				}
 			});
+
+			var authToken = oauth.requestHeader(options);
+
+			// Extend options with graph api parameters
+			_.extend(options, {
+				headers: {
+					'Authorization': authToken
+				}
+			});
 			
-			return oauth.request(options);
-			// return Backbone.Collection.prototype.fetch.call(this, options);
+			// return oauth.request(options);
+			return Backbone.Collection.prototype.fetch.call(this, options);
 		},
-
-		parse: function(response) {
-			// Store paging urls
-			if(response.paging) {
-				this.nextUrl = response.paging.next || null;
-				this.prevUrl = response.paging.previous || null;
-			}
-			return response.data;
-		},
-
 
 		fetchNext: function(options) {
 			var url = this.nextUrl;
