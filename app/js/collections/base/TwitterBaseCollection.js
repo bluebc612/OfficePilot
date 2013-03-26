@@ -35,23 +35,26 @@ define([
 		},
 
 		success: function(data) {
-			console.log("Success : " + data.text);
+			return data.text;
+			console.log("Success");
 		},
 
 		failure: function(data) {
 			console.log("Error : " + data.text);
 		},
 
-		fetch: function(options) {
+		fetchTweets: function(options) {
+			console.log("fetchTweets");
+
 			var limit = this.limit;
 
 			options = options || {};
 
 			// Extend options with graph api parameters
 			_.extend(options, {
-				method: this.method,
+			method: this.method,
 				url: this.url(),
-				success: this.success,
+				success: success,
 				failure: this.failure,
 				data: {
 					limit: limit

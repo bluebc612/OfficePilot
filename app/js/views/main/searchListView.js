@@ -3,39 +3,37 @@ define([
   'underscore',
   'backbone',
   'vm',
-  'collections/main/TimelineCollection',
-  'text!templates/main/facebookList.html'
-], function($, _, Backbone, Vm, TimelineCollection, TimelineListTemplate){
+  'collections/main/SearchCollection',
+  'text!templates/main/searchList.html'
+], function($, _, Backbone, Vm, SearchCollection, searchListTemplate){
   var TwitterWidget = Backbone.View.extend({
     el: '.twitter-widget',
+
     initialize: function () {
-      // isLoading is a useful flag to make sure we don't send off more than
-      // one request at a time
       this.isLoading = false;
-      this.timelineCollection = new TimelineCollection();
+      this.searchCollection = new SearchCollection();
     },
+
     render: function () {
       $('.menu li').removeClass('active');
       $('.menu li a[href="#/topics"]').parent().addClass('active');
       
       this.loadResults();
     },
+
     loadResults: function () {
       var that = this;
-      // we are starting a new load of results so set isLoading to true
+
       this.isLoading = true;
-      // fetch is Backbone.js native function for calling and parsing the collection url
-      this.timelineCollection.fetch({ 
-        success: function (timelines) {
-          // Once the results are returned lets populate our template
-          console.log("facebook fetch success");
-          $(that.el).html(_.template(TimelineListTemplate, {timelines: timelines.models, _:_}));
-          // Now we have finished loading set isLoading back to false
+      this.searchCollection.fetchTweets({ 
+        success: function (tweets) {
+          console.log("Search Tweets Fetch Success");
+          $(that.el).html(_.template(searchListTemplate, {tweets: tweets.models, _:_}));
           that.isLoading = false;
         }
       });      
     },
-    // This will simply listen for scroll events on the current el
+
     events: {
       'scroll': 'checkScroll'
     },

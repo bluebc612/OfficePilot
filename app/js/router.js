@@ -18,9 +18,9 @@ var initialize = function(options){
     var app_router = new AppRouter;
     
     app_router.on('route:showTopics', function(actions) {
-      require(['views/main/FacebookListView'], function (TwitterWidget) {
-        var twitterView = Vm.create(appView, 'TwitterWidget', TwitterWidget);
-        twitterView.render();
+      require(['views/main/searchListView'], function (TwitterWidget) {
+        var topicsView = Vm.create(appView, 'TwitterWidget', TwitterWidget);
+        topicsView.render();
       });
     });
 
