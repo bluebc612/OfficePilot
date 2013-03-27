@@ -1,0 +1,51 @@
+
+<div class="tiles clearfix">
+	<div class="tile double image">
+        <div class="tile-content">
+            <img src="<%= profile.profile_background_image_url %>" alt="">
+        </div>
+        <div class="brand bg-color-orange">
+            <p class="text">
+            	<%= profile.description %>
+            </p>
+        </div>
+    </div>
+
+	<div class="tile bg-color-green icon">
+	    <div class="brand">
+	    	<div class="name">Tweets</div>
+	    </div>
+	</div>
+
+	<div class="tile bg-color-red icon">
+	    <div class="brand">
+	        <div class="name">Following</div>
+	        <div class="badge"><%= profile.friends_count %></div>
+	    </div>
+	</div>
+
+	<div class="tile double bg-color-blueDark">
+	    <div class="tile-content">
+	        <img src="<%= profile.profile_image_url %>" class="place-left">
+	        <h3 style="margin-bottom: 5px;"><%= profile.name %></h3>
+	        <p>
+	           <%= profile.location %>
+	           @<%= profile.screen_name %>
+	        </p>
+	    </div>
+	</div>
+
+	<div class="tile bg-color-darken icon">
+	    <div class="brand">
+	        <span class="name">Followers</span>
+	       	<span class="badge"><%= profile.followers_count %></span>
+	    </div>
+	</div>
+
+	<div class="tile icon">
+	    <div class="brand">
+	        <span class="name">Retweet</span>
+	    </div>
+	</div>
+	
+</div>

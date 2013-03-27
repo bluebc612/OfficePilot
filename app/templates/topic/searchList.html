@@ -1,10 +1,19 @@
 <% 
 	var idx = 0;
+	var user;
 	_.each(tweets, function (tweet) { 
+		user = tweet.get('user');
+		console.log(user);
 %>
-	<div class="<%= (++idx%2 == 0) ? "tile" : "tile double" %>">
+	<div class="tile double">
 		<div class="tile-content <%= (idx%2 == 0) ? "bg-color-green" : "bg-color-blueDark" %>">
+			<img src="<%= user.profile_image_url %>" class="place-left">
+			<h3 style="margin-bottom:5px;"><%= user.name %></h3>
+			<p>	
 			<%= tweet.get('text') %>
+			</p>
+			<h5></h5>
+			<p></p>
 		</div>
 	</div>
 <% 

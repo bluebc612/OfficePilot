@@ -7,6 +7,8 @@ define([
   var BaseView = Backbone.View.extend({
     el: '.twitter-widget',
 
+    model: null,
+    
     collection: null,
 
     initialize: function () {
