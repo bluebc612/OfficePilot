@@ -10,15 +10,8 @@ define([
     el: '.container',
 
     initialize: function () {
-      $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-        options.crossDomain ={
-          crossDomain: true
-        };
-        options.xhrFields = {
-          withCredentials: true
-        };
-      });
     },
+    
     render: function () {
       var that = this;
       $(this.el).html(layoutTemplate);
