@@ -10,7 +10,7 @@
 	<category> </category>
 	<autoUpdate>n</autoUpdate>
 	<ver>0.100</ver>
-	<mgrver> </mgrver>
+	<mgrver>n</mgrver>
 	<fullwidget>y</fullwidget>
 	<type>user</type>
 	<srcctl>y</srcctl>
